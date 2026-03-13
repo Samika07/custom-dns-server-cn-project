@@ -1,0 +1,3 @@
+google.local 192.168.1.10
+drdo.local 192.168.1.20
+chatgpt.local 192.168.1.30
