@@ -1,0 +1,2 @@
+google.local 192.168.1.10
+drdo.local 192.168.1.20
