@@ -3,8 +3,8 @@
 #include <string.h>
 
 // Check local DNS file
-int check_local(const char *domain) {
-    FILE *f = fopen("dns_records.txt", "r");
+int localcheck(const char *domain) {
+    FILE *f = fopen("dns.txt", "r");
     if (!f) return 0;
 
     char d[100], ip[50];
@@ -22,10 +22,10 @@ int check_local(const char *domain) {
 }
 
 // Main resolver
-int resolve_domain(const char *domain) {
+int resdomain(const char *domain) {
 
     // Step 1: check local records
-    if (check_local(domain)) {
+    if (localcheck(domain)) {
         return 1; // found locally
     }
 
