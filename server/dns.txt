@@ -1,1 +1,24 @@
-google.local 192.168.1.10
+# A Records (domain → IPv4)
+google.local A 192.168.1.10
+drdo.local A 192.168.1.20
+
+# AAAA Records (IPv6)
+ipv6.local AAAA 2001:db8::1
+
+# CNAME (alias)
+www.local CNAME google.local
+
+# MX (mail server)
+mail.local MX mailserver.local
+
+# NS (name server)
+local NS ns1.local
+
+# TXT (text info)
+info.local TXT "This is a test domain"
+
+# PTR (reverse lookup)
+10.1.168.192.in-addr.arpa PTR google.local
+
+# SOA (start of authority)
+local SOA ns1.local admin.local 2024040701
