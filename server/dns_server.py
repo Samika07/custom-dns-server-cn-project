@@ -7,17 +7,20 @@ BUFFER_SIZE = 512
 
 def load_dns_records():
     records = {}
+
     with open("dns_records.txt") as f:
         for line in f:
             domain, ip = line.strip().split()
             records[domain] = ip
+
     return records
 
 
 def build_response(query):
     """
-    Build simple DNS response (echo packet for now)
+    Build simple DNS response
     """
+
     transaction_id = query[:2]
     flags = b'\x81\x80'
     qdcount = b'\x00\x01'
@@ -41,18 +44,23 @@ def main():
     while True:
         data, addr = sock.recvfrom(BUFFER_SIZE)
 
+        # DEBUG SNIPPETS ADDED
+        print("\nReceived packet from:", addr)
+        print("Raw Data:", data)
+
         domain = parse_dns_query(data)
 
-        print("\nReceived Query:", domain)
+        print("Received Query:", domain)
 
         if domain in dns_records:
-            print("Resolved locally →", dns_records[domain])
+            print("Resolved locally ->", dns_records[domain])
         else:
             print("Domain not in local database")
 
         response = build_response(data)
 
         sock.sendto(response, addr)
+        print("Response sent successfully")
 
 
 if __name__ == "__main__":
