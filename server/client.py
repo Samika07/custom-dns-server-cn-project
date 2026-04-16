@@ -1,7 +1,8 @@
 import socket
 import json
 
-SERVER_IP = "192.168.1.5"  # CHANGE THIS
+SERVER_IP = "127.0.0.1"  
+
 PORT = 8053
 
 domain = input("Enter domain: ")
