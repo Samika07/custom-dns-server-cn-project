@@ -34,7 +34,7 @@ def main():
     dns_records = load_dns_records()
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.bind(("0.0.0.0", PORT))
+    sock.bind(("0.0.0.0", 8053))
 
     print(f"DNS Server running on port {PORT}")
 
