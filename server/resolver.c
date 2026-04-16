@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <string.h>
 
-// Check local DNS file
 int localcheck(const char *domain) {
     FILE *f = fopen("dns.txt", "r");
     if (!f) return 0;
@@ -21,17 +20,21 @@ int localcheck(const char *domain) {
     return 0;
 }
 
-// Main resolver
 int resdomain(const char *domain) {
+    if (localcheck(domain))
+        return 1;
 
-    // Step 1: check local records
-    if (localcheck(domain)) {
-        return 1; // found locally
-    }
-
-    // Step 2: forward to external DNS
     printf("Forwarding to 8.8.8.8: %s\n", domain);
+    return 2;
+}
 
-    // (Actual forwarding handled in full version)
-    return 2; // external
+int main() {
+    char domain[100];
+
+    printf("Enter domain: ");
+    scanf("%s", domain);
+
+    resdomain(domain);
+
+    return 0;
 }
