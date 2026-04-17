@@ -1,19 +1,27 @@
-import struct
-
 def parse_dns_query(data):
     """
-    Extract domain name from DNS query packet
+    Safely extract domain name from DNS packet
     """
+
     domain = []
-    i = 12  # DNS header size
+    i = 12   # DNS header starts after 12 bytes
 
-    length = data[i]
+    try:
+        while i < len(data):
+            length = data[i]
 
-    while length != 0:
-        i += 1
-        domain.append(data[i:i+length].decode())
-        i += length
-        length = data[i]
+            if length == 0:
+                break
 
-    domain_name = ".".join(domain)
-    return domain_name
+            i += 1
+
+            label = data[i:i + length].decode(errors="ignore")
+            domain.append(label)
+
+            i += length
+
+        return ".".join(domain)
+
+    except Exception as e:
+        print("Parser Error:", e)
+        return "invalid.query"
