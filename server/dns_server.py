@@ -37,30 +37,38 @@ def main():
     dns_records = load_dns_records()
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.bind(("0.0.0.0", 8053))
+    sock.bind(("0.0.0.0", PORT))
 
     print(f"DNS Server running on port {PORT}")
 
     while True:
         data, addr = sock.recvfrom(BUFFER_SIZE)
 
-        # DEBUG SNIPPETS ADDED
-        print("\nReceived packet from:", addr)
-        print("Raw Data:", data)
+        try:
+            # DEBUG OUTPUT
+            print("\nReceived packet from:", addr)
+            print("Raw Data:", data)
 
-        domain = parse_dns_query(data)
+            # Parse incoming DNS query
+            domain = parse_dns_query(data)
 
-        print("Received Query:", domain)
+            print("Received Query:", domain)
 
-        if domain in dns_records:
-            print("Resolved locally ->", dns_records[domain])
-        else:
-            print("Domain not in local database")
+            # Local resolution
+            if domain in dns_records:
+                print("Resolved locally ->", dns_records[domain])
+            else:
+                print("Domain not in local database")
+                print("Forwarding to external DNS (8.8.8.8)")
 
-        response = build_response(data)
+            # Build and send response
+            response = build_response(data)
 
-        sock.sendto(response, addr)
-        print("Response sent successfully")
+            sock.sendto(response, addr)
+            print("Response sent successfully")
+
+        except Exception as e:
+            print("Error while handling request:", e)
 
 
 if __name__ == "__main__":
